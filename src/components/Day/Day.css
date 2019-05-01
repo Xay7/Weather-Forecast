@@ -1,3 +1,9 @@
 .Day {
     border: 1px solid black;
+    width: 70px;
+    height: 150px;
+}
+
+.Temperature {
+    margin: 0;
 }
