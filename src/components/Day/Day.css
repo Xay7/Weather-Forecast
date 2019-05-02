@@ -1,9 +1,36 @@
-.Day {
+.Days {
+    width: 100px;
+}
+
+.DaysSelected {
     border: 1px solid black;
-    width: 70px;
-    height: 150px;
 }
 
 .Temperature {
     margin: 0;
+}
+
+.TemperatureUpdated,
+.WeatherImageUpdated {
+    animation: opacityAnimation 500ms ease-in;
+}
+
+@keyframes opacityAnimation {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.Day {
+    margin: 0px;
+}
+
+@media (max-width: 480px) {
+    .Days {
+        padding-bottom: 10px;
+    }
 }

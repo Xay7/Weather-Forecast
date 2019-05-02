@@ -1,13 +1,25 @@
 import React from 'react';
 import './Day.css';
-import image from '../../assets/images/sunny.png';
 
 const Day = (props) => {
+
+    let tempClass = 'Temperature';
+
+    if (props.updated) {
+        tempClass = 'Temperature TemperatureUpdated';
+    }
+
+    let imgClass = 'WeatherImage';
+
+    if (props.updated) {
+        imgClass = 'WeatherImage WeatherImageUpdated';
+    }
+
     return (
-        <div className="Day">
-            <h3>{props.day}</h3>
-            <img src={image} alt="Current weather" />
-            <h4 className="Temperature">20</h4>
+        <div className="Days" onClick={props.onclick}>
+            <h3 className="Day">{props.day}</h3>
+            <img src={props.icon} alt="Current weather" className={imgClass} />
+            <p className={tempClass}>{props.temperature}°</p>
         </div>
     )
 }
