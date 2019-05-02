@@ -2,7 +2,10 @@ html,
 body {
     height: 100%;
     overflow: hidden;
-
+    background-image: url('./assets/images/weather.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 
