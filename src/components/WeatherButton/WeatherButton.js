@@ -2,8 +2,14 @@ import React from 'react';
 import './WeatherButton.css';
 
 const Button = (props) => {
+
+    let btnCSS = 'WeatherButton';
+
+    if (props.test) {
+        btnCSS = 'WeatherButton WeatherButtonClicked'
+    }
     return (
-        <button className="WeatherButton" onClick={props.onclick}>{props.children}</button>
+        <button className={btnCSS} onClick={props.onclick}>{props.children}</button>
     )
 }
 

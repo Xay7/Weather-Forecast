@@ -11,12 +11,13 @@
     transition: all 350ms;
 }
 
-.WeatherButton:hover {
-    background-color: #097dca;
+.WeatherButtonClicked {
+    background-color: #2ecc71;
 }
 
-.WeatherButton:active {
-    background-color: #015f9e;
+.WeatherButton:hover {
+    background-color: #2ecc71;
+    cursor: pointer;
 }
 
 

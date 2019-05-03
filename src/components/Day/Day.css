@@ -1,19 +1,21 @@
 .Days {
     width: 100px;
     margin: 0 20px;
-
+    padding: 5px 5px;
 }
 
 .Days:hover {
     cursor: pointer;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.20);
+    background-color: rgba(0, 0, 0, 0.06);
 }
 
 
 .DaysSelected {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.20);
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.06);
 }
 
 .Temperature {
@@ -39,11 +41,24 @@
     margin: 0px;
 }
 
+.TempMax {
+    margin-right: 10px;
+}
+
+.TempMin {
+    color: grey;
+}
+
 
 
 @media (max-width: 480px) {
     .Days {
-        padding-bottom: 10px;
+        color: white;
+        padding: 0;
+        margin-bottom: 10px;
+    }
+
+    .TempMin {
         color: white;
     }
 

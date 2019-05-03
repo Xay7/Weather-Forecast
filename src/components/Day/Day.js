@@ -17,7 +17,6 @@ const Day = (props) => {
 
     let daysCSS = 'Days'
 
-
     if (props.selected) {
         daysCSS = 'Days DaysSelected';
     }
@@ -27,7 +26,10 @@ const Day = (props) => {
         <div className={daysCSS} onClick={props.onclick} >
             <h3 className="Day">{props.day}</h3>
             <img src={props.icon} alt="Current weather" className={imgClass} />
-            <p className={tempClass}>{props.temperature}°</p>
+            <p className={tempClass}>
+                <span className="TempMax">{props.temperatureMax}°</span>
+                <span className="TempMin">{props.temperatureMin}°</span>
+            </p>
         </div>
     )
 }
