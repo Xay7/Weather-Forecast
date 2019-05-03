@@ -27,7 +27,7 @@
 .City {
     border: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.12),
-    0 2px 4px 0 rgba(0, 0, 0, 0.08);
+        0 2px 4px 0 rgba(0, 0, 0, 0.08);
     border-radius: 25px;
     background-color: #2ecc71;
     color: white;
@@ -41,22 +41,24 @@
     transition: all 500ms;
 }
 
-.City:hover {
+.CityFocus:hover {
     background-color: #16b156;
 }
 
 
-.CityError:focus {
+.CityError {
     background-color: #FF6666;
 }
 
 .recharts-wrapper {
     margin: 0 auto;
     margin-top: 20px;
+
 }
 
 tspan {
-    font-size: 14px;
+    font-size: 12px;
+
 }
 
 .Title {
@@ -100,7 +102,6 @@ tspan {
 @media (max-height: 320px) {
 
     .Weather {
-        width: 568px;
         padding: 0;
         height: auto;
         margin-top: 20px;
@@ -114,8 +115,7 @@ tspan {
         margin: 0;
         box-shadow: none;
         margin: 0 auto;
-        background-color: white;
-        margin: 30px 30px;
+        background-color: transparent;
     }
 
     .recharts-surface {
@@ -152,7 +152,7 @@ tspan {
     }
 
     .WeatherButtonContainer {
-        margin-top:30px;
+        margin-top: 30px;
     }
 
     tspan {

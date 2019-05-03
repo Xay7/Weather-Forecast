@@ -24,41 +24,8 @@ class Weather extends Component {
         windClick: false,
     }
 
-    // Weather data provided by APIXU
-    fetchData = (city) => {
-        fetch('https://api.apixu.com/v1/forecast.json?key=ca7637b4f307488b97a144627190105&q=' + city + '&days=7&units=metric')
-            .then(res => {
-                return res.json();
-            })
-            .then(data => {
-                const weatherData = {
-                    dates: [],
-                    icon: []
-                }
-
-                data.forecast.forecastday.map(el => {
-                    return weatherData.dates.push(el.date);
-                });
-
-                data.forecast.forecastday.map(el => {
-                    return weatherData.icon.push(el.day.condition.icon);
-                });
-                this.setState({
-                    dates: weatherData.dates,
-                    icon: weatherData.icon,
-                    error: false,
-                    updated: true
-                });
-            })
-            .catch(error => {
-                this.setState({ error: true });
-                console.log("Error has occured: ", error)
-            });
-    }
-
-
     // 3 hour daily forecast provided by www.openweathermap.org
-    fetchGraphData = (city) => {
+    fetchWeatherData = (city) => {
         fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=metric&appid=0044f0866f4b9b2160761fd5ce752fed')
             .then(res => {
                 return res.json()
@@ -70,10 +37,9 @@ class Weather extends Component {
                     thirdDay: [],
                     fourthDay: [],
                     fifthDay: [],
-                    weeklyTime: [],
+                    weeklyTime: []
                 }
                 console.log(data);
-
                 let tempMin = [99, 99, 99, 99, 99];
 
                 let tempMax = [-99, -99, -99, -99, -99];
@@ -88,10 +54,13 @@ class Weather extends Component {
                         wind: (el.wind.speed * 3.6).toFixed(1),
                         windString: (el.wind.speed * 3.6).toFixed(1).toString() + ' km/h',
                         tempMin: (Math.round(el.main.temp_min)),
-                        tempMax: (Math.round(el.main.temp_max))
+                        tempMax: (Math.round(el.main.temp_max)),
+                        dates: (el.dt_txt.slice(0, 10)),
+                        icon: 'http://openweathermap.org/img/w/' + el.weather[0].icon + '.png'
                     });
                 })
-                console.log(weatherData);
+
+                console.log(weatherData)
 
                 // Get first 9 3-hours for first day
                 for (let i = 0; i < 9; i++) {
@@ -197,6 +166,21 @@ class Weather extends Component {
                     weatherData.weeklyTime.shift();
                 }
 
+                let dates = [
+                    weatherData.firstDay[0].dates,
+                    weatherData.secondDay[0].dates,
+                    weatherData.thirdDay[0].dates,
+                    weatherData.fourthDay[0].dates,
+                    weatherData.fifthDay[0].dates,
+                ];
+
+                let icons = [
+                    weatherData.firstDay[0].icon,
+                    weatherData.secondDay[4].icon,
+                    weatherData.thirdDay[4].icon,
+                    weatherData.fourthDay[4].icon,
+                    weatherData.fifthDay[4].icon,
+                ];
 
                 this.setState({
                     firstDay: weatherData.firstDay,
@@ -205,28 +189,30 @@ class Weather extends Component {
                     fourthDay: weatherData.fourthDay,
                     fifthDay: weatherData.fifthDay,
                     tempMin: tempMin,
-                    tempMax: tempMax
+                    tempMax: tempMax,
+                    error: false,
+                    dates: dates,
+                    updated: true,
+                    icon: icons
                 });
-                console.log(this.state);
             })
             .catch(error => {
+                this.setState({ error: true });
                 console.log("Error has occured: ", error);
             })
     }
 
     // Show a data sample when page loads
     componentDidMount() {
-        this.fetchData('Paris');
-        this.fetchGraphData('Paris');
+        this.fetchWeatherData('Paris');
     }
 
     // Event handlers
     onKeyEventHandler = (event) => {
-
         if (event.charCode === 13) {
-            this.fetchData(event.target.value);
-            this.fetchGraphData(event.target.value);
+            this.fetchWeatherData(event.target.value);
             this.setState({ updated: false });
+            document.activeElement.blur();
         }
     }
 
@@ -347,7 +333,7 @@ class Weather extends Component {
 
         if (this.state.temperatureClick) {
             chart = (
-                <LineChart width={720} height={250} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                <LineChart  width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
                     <Line type="monotone" dataKey="temperature" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false}>
                         <LabelList dataKey="temperatureString" position="top" offset={15} />
                     </Line>
@@ -358,9 +344,9 @@ class Weather extends Component {
 
         if (this.state.windClick) {
             chart = (
-                <LineChart width={720} height={250} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                <LineChart  width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
                     <Line type="monotone" dataKey="wind" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false}>
-                        <LabelList dataKey="windString" position="top" offset={20} />
+                        <LabelList dataKey="windString" position="top" offset={15} />
                     </Line>
                     <XAxis dataKey="time" axisLine={false} tickLine={false} />
                 </LineChart>
@@ -369,7 +355,7 @@ class Weather extends Component {
 
         if (this.state.humidityClick) {
             chart = (
-                <AreaChart width={720} height={250} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                <AreaChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
                     <Area type="monotone" dataKey="humidity" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" fillOpacity={0.2}>
                         <LabelList dataKey="humidityString" position="top" offset={15} />
                     </Area>
@@ -404,9 +390,9 @@ class Weather extends Component {
                         <WeatherButton onclick={() => this.setState({ humidityClick: true, temperatureClick: false, windClick: false })} test={this.state.humidityClick}>Humidity</WeatherButton>
                     </div>
                     <div>
-
                         {chart}
-                    </div></div>
+                    </div>
+                </div>
 
 
             </Fragment>
