@@ -9,34 +9,45 @@
 }
 
 .Container {
-    box-shadow: 0 0 1px black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px 0 rgba(0, 0, 0, 0.08);
     margin: 0 auto;
     width: max-content;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 25px;
+
+}
+
+.WeatherButtonContainer {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .City {
-    border: 1px solid black;
-    border-radius: 3px;
-    background-color: #ECF0F1;
+    border: none;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px 0 rgba(0, 0, 0, 0.08);
+    border-radius: 25px;
+    background-color: #2ecc71;
+    color: white;
     font-size: 24px;
     text-align: center;
     outline-width: 0;
-    margin-top: 50px;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     width: 250px;
     height: 50px;
-    transition: all 250ms;
+    transition: all 500ms;
 }
 
-.CityFocus:focus {
-    box-shadow: 0px 0px 4px black;
+.City:hover {
+    background-color: #16b156;
 }
+
 
 .CityError:focus {
     background-color: #FF6666;
-    box-shadow: 0px 0px 4px black;
 }
 
 .recharts-wrapper {
@@ -48,16 +59,103 @@ tspan {
     font-size: 14px;
 }
 
+.Title {
+    color: white;
+}
+
 @media (max-width: 480px) {
     .Weather {
         width: 320px;
+        padding: 0;
+        height: auto;
+        margin: 0;
+        margin-top: 20px;
         flex-wrap: wrap;
+    }
+
+    .Title {
+        font-size: 1.5em;
+    }
+
+    .City {
+        margin: 20px 0;
+    }
+
+    .Container {
+        margin: 0;
+        box-shadow: none;
+        margin: 0 auto;
+        background-color: transparent;
+    }
+
+    .recharts-surface {
+        display: none;
+    }
+
+    .recharts-wrapper {
+        display: none;
+    }
+}
+
+@media (max-height: 320px) {
+
+    .Weather {
+        width: 568px;
         padding: 0;
         height: auto;
         margin-top: 20px;
     }
 
     .City {
-        margin-top: 30px;
+        margin: 20px 0;
+    }
+
+    .Container {
+        margin: 0;
+        box-shadow: none;
+        margin: 0 auto;
+        background-color: white;
+        margin: 30px 30px;
+    }
+
+    .recharts-surface {
+        max-width: 550px;
+    }
+
+    .recharts-wrapper {
+        max-width: 550px;
+    }
+
+    tspan {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) and (min-width:481px) {
+    .Weather {
+        width: 90%;
+        padding-bottom: 0;
+    }
+
+    .Container {
+        width: auto;
+        padding-top: 10px;
+        margin: 30px 30px;
+    }
+
+    .recharts-surface {
+        max-width: 100%;
+    }
+
+    .recharts-wrapper {
+        max-width: 100%;
+    }
+
+    .WeatherButtonContainer {
+        margin-top:30px;
+    }
+
+    tspan {
+        font-size: 16px;
     }
 }

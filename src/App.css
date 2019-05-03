@@ -1,15 +1,38 @@
 html,
 body {
     height: 100%;
-    overflow: hidden;
+    width: 100%;
     background-image: url('./assets/images/weather.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    backface-visibility: hidden;
+    overflow: hidden;
+
 }
-
-
 
 .App {
     text-align: center;
+}
+
+.Github {
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    padding: 10px 10px;
+}
+
+@media (max-width: 480px),
+(max-height: 420px) {
+
+    html,
+    body {
+        height: 100%;
+        background-image: none;
+        background: #3498db;
+        overflow: auto;
+
+    }
 }

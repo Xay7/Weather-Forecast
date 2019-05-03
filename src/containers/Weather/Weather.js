@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import Day from '../../components/Day/Day';
 import './Weather.css';
-import { LineChart, Line, XAxis, LabelList } from 'recharts';
+import { LineChart, Line, XAxis, LabelList, AreaChart, Area } from 'recharts';
+import WeatherButton from '../../components/WeatherButton/WeatherButton';
 
 class Weather extends Component {
 
@@ -9,7 +10,7 @@ class Weather extends Component {
         dates: [],
         temperature: [],
         icon: [],
-        loading: true,
+        humidity: [],
         error: false,
         updated: false,
         firstDay: [],
@@ -17,21 +18,19 @@ class Weather extends Component {
         thirdDay: [],
         fourthDay: [],
         fifthDay: [],
-        firstDayClick: true,
-        secondDayClick: false,
-        thirdDayClick: false,
-        fourthDayClick: false,
-        fifthDayClick: false
+        selected: [true, false, false, false, false],
+        temperatureClick: true,
+        humidityClick: false,
+        windClick: false,
     }
 
     // Weather data provided by APIXU
     fetchData = (city) => {
-        fetch('https://api.apixu.com/v1/forecast.json?key=ca7637b4f307488b97a144627190105&q=' + city + '&days=7')
+        fetch('https://api.apixu.com/v1/forecast.json?key=ca7637b4f307488b97a144627190105&q=' + city + '&days=7&units=metric')
             .then(res => {
                 return res.json();
             })
             .then(data => {
-
                 const weatherData = {
                     dates: [],
                     temperature: [],
@@ -74,29 +73,32 @@ class Weather extends Component {
                 return res.json()
             })
             .then(data => {
-
                 const weatherData = {
                     firstDay: [],
                     secondDay: [],
                     thirdDay: [],
                     fourthDay: [],
                     fifthDay: [],
-                    weeklyTime: [],
+                    weeklyTime: []
                 }
 
                 data.list.map(el => {
                     return weatherData.weeklyTime.push({
                         time: (el.dt_txt.slice(11, 16)),
-                        temperature: (Math.round(el.main.temp))
+                        temperature: (Math.round(el.main.temp)),
+                        temperatureString: (Math.round(el.main.temp)).toString() + '°',
+                        humidity: el.main.humidity,
+                        humidityString: el.main.humidity + '%',
+                        wind: (el.wind.speed * 3.6).toFixed(1),
+                        windString: (el.wind.speed * 3.6).toFixed(1).toString() + ' km/h'
                     });
                 })
-                console.dir(data.list);
-                // Handle first day
+                // Get first 9 3-hours for first day
                 for (let i = 0; i < 9; i++) {
                     weatherData.firstDay[i] = weatherData.weeklyTime[i];
                 }
 
-                // Remove remaining first day hours
+                // Remove remaining first day hours for remaining days
                 for (let y = 0; y < 2; y++) {
                     if (weatherData.weeklyTime[y].time === "03:00" && weatherData.weeklyTime[y + 1].time === "06:00") {
                         break;
@@ -106,7 +108,8 @@ class Weather extends Component {
                         weatherData.weeklyTime.shift();
                     }
                 }
-                // Handle other days
+
+                // Handle other days hours
 
                 let help = 0;
 
@@ -149,13 +152,7 @@ class Weather extends Component {
                     help++;
                     weatherData.weeklyTime.shift();
                 }
-
-
-
-
-                console.log(weatherData);
-
-
+                console.log(data);
                 this.setState({
                     firstDay: weatherData.firstDay,
                     secondDay: weatherData.secondDay,
@@ -169,13 +166,13 @@ class Weather extends Component {
             })
     }
 
+    // Show a data sample when page loads
     componentDidMount() {
         this.fetchData('Paris');
         this.fetchGraphData('Paris');
     }
 
     // Event handlers
-
     onKeyEventHandler = (event) => {
 
         if (event.charCode === 13) {
@@ -190,58 +187,71 @@ class Weather extends Component {
     }
 
     onFirstDayClickHandler = () => {
-        this.setState({
-            firstDayClick: true,
-            secondDayClick: false,
-            thirdDayClick: false,
-            fourthDayClick: false,
-            fifthDayClick: false
+        let arr = [...this.state.selected];
+
+        arr.map((_el, index) => {
+            if (index === 0) {
+                return arr[index] = true;
+            } else return arr[index] = false;
         })
+
+        this.setState({ selected: arr })
     }
     onSecondDayClickHandler = () => {
-        this.setState({
-            firstDayClick: false,
-            secondDayClick: true,
-            thirdDayClick: false,
-            fourthDayClick: false,
-            fifthDayClick: false
+
+        let arr = [...this.state.selected];
+
+        arr.map((_el, index) => {
+            if (index === 1) {
+                return arr[index] = true;
+            } else return arr[index] = false;
         })
+
+        this.setState({ selected: arr })
     }
 
     onThirdDayClickHandler = () => {
-        this.setState({
-            firstDayClick: false,
-            secondDayClick: false,
-            thirdDayClick: true,
-            fourthDayClick: false,
-            fifthDayClick: false
+        let arr = [...this.state.selected];
+
+        arr.map((_el, index) => {
+            if (index === 2) {
+                return arr[index] = true;
+            } else return arr[index] = false;
         })
+
+        this.setState({ selected: arr })
     }
 
     onFourthDayClickHandler = () => {
-        this.setState({
-            firstDayClick: false,
-            secondDayClick: false,
-            thirdDayClick: false,
-            fourthDayClick: true,
-            fifthDayClick: false
+        let arr = [...this.state.selected];
+
+        arr.map((_el, index) => {
+            if (index === 3) {
+                return arr[index] = true;
+            } else return arr[index] = false;
         })
+
+        this.setState({ selected: arr })
     }
 
     onFifthDayClickHandler = () => {
-        this.setState({
-            firstDayClick: false,
-            secondDayClick: false,
-            thirdDayClick: false,
-            fourthDayClick: false,
-            fifthDayClick: true
+        let arr = [...this.state.selected];
+
+        arr.map((_el, index) => {
+            if (index === 4) {
+                return arr[index] = true;
+            } else return arr[index] = false;
         })
+
+        this.setState({ selected: arr })
     }
+
+
 
 
     render() {
 
-        // Convert numeric dates into string dates for dynamic day display
+        // Convert numeric dates into string dates for user friendly interface
         function getDayName(dateStr, locale) {
             var date = new Date(dateStr);
             return date.toLocaleDateString(locale, { weekday: 'long' });
@@ -253,7 +263,7 @@ class Weather extends Component {
             return days.push(getDayName(el, "en-US").slice(0, 3) + '.');
         });
 
-        // Dynamic input CSS based on error state
+        // Change input CSS based on error 
         let inputCSS = 'City CityFocus';
 
         if (this.state.error) {
@@ -264,39 +274,66 @@ class Weather extends Component {
         // Dynamic data display on graph based on a selected day
         let data = null;
 
-        if (this.state.firstDayClick) {
+        if (this.state.selected[0]) {
             data = this.state.firstDay;
         }
 
-        if (this.state.secondDayClick) {
+        if (this.state.selected[1]) {
             data = this.state.secondDay;
+
         }
 
-        if (this.state.thirdDayClick) {
+        if (this.state.selected[2]) {
             data = this.state.thirdDay;
         }
-        if (this.state.fourthDayClick) {
+        if (this.state.selected[3]) {
             data = this.state.fourthDay;
         }
 
-        if (this.state.fifthDayClick) {
+        if (this.state.selected[4]) {
             data = this.state.fifthDay;
         }
 
-        const renderLineChart = (
-            <LineChart width={720} height={150} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
-                <Line type="monotone" dataKey="temperature" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out">
-                    <LabelList dataKey="temperature" position="top" offset={15} />
-                </Line>
-                <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ strokeWidth: 5 }} />
-            </LineChart>)
+        // Charts by www.recharts.org
+        let chart = null;
 
+        if (this.state.temperatureClick) {
+            chart = (
+                <LineChart width={720} height={250} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                    <Line type="monotone" dataKey="temperature" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false}>
+                        <LabelList dataKey="temperatureString" position="top" offset={15} />
+                    </Line>
+                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                </LineChart>
+            )
+        }
 
+        if (this.state.humidityClick) {
+            chart = (
+                <AreaChart width={720} height={250} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                    <Area type="monotone" dataKey="humidity" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" fillOpacity={0.2}>
+                        <LabelList dataKey="humidityString" position="top" offset={15} />
+                    </Area>
+                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                </AreaChart>
+            )
+        }
+
+        if (this.state.windClick) {
+            chart = (
+                <AreaChart width={720} height={250} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                    <Area type="monotone"  dataKey="wind" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" fillOpacity={0.2}>
+                        <LabelList dataKey="windString" position="top" offset={20} />
+                    </Area>
+                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                </AreaChart>
+            )
+        }
 
         return (
             <Fragment>
-
-                <div>
+                <h1 className="Title">5 day weather forecast</h1>
+                <div >
                     <input
                         type="text"
                         defaultValue="Paris"
@@ -306,15 +343,21 @@ class Weather extends Component {
                 </div>
                 <div className="Container">
                     <div className="Weather">
-                        <Day day={days[0]} temperature={this.state.temperature[0]} icon={this.state.icon[0]} updated={this.state.updated} onclick={this.onFirstDayClickHandler}></Day>
-                        <Day day={days[1]} temperature={this.state.temperature[1]} icon={this.state.icon[1]} updated={this.state.updated} onclick={this.onSecondDayClickHandler}></Day>
-                        <Day day={days[2]} temperature={this.state.temperature[2]} icon={this.state.icon[2]} updated={this.state.updated} onclick={this.onThirdDayClickHandler}></Day>
-                        <Day day={days[3]} temperature={this.state.temperature[3]} icon={this.state.icon[3]} updated={this.state.updated} onclick={this.onFourthDayClickHandler}></Day>
-                        <Day day={days[4]} temperature={this.state.temperature[4]} icon={this.state.icon[4]} updated={this.state.updated} onclick={this.onFifthDayClickHandler}></Day>
+                        <Day day={days[0]} temperature={this.state.temperature[0]} icon={this.state.icon[0]} updated={this.state.updated} onclick={this.onFirstDayClickHandler} selected={this.state.selected[0]}></Day>
+                        <Day day={days[1]} temperature={this.state.temperature[1]} icon={this.state.icon[1]} updated={this.state.updated} onclick={this.onSecondDayClickHandler} selected={this.state.selected[1]}></Day>
+                        <Day day={days[2]} temperature={this.state.temperature[2]} icon={this.state.icon[2]} updated={this.state.updated} onclick={this.onThirdDayClickHandler} selected={this.state.selected[2]}></Day>
+                        <Day day={days[3]} temperature={this.state.temperature[3]} icon={this.state.icon[3]} updated={this.state.updated} onclick={this.onFourthDayClickHandler} selected={this.state.selected[3]}></Day>
+                        <Day day={days[4]} temperature={this.state.temperature[4]} icon={this.state.icon[4]} updated={this.state.updated} onclick={this.onFifthDayClickHandler} selected={this.state.selected[4]}></Day>
 
                     </div >
+                    <div className="WeatherButtonContainer">
+                        <WeatherButton onclick={() => this.setState({ humidityClick: false, temperatureClick: true, windClick: false })}>Temperature</WeatherButton>
+                        <WeatherButton onclick={() => this.setState({ humidityClick: false, temperatureClick: true, windClick: true })}>Wind</WeatherButton>
+                        <WeatherButton onclick={() => this.setState({ humidityClick: true, temperatureClick: false, windClick: false })}>Humidity</WeatherButton>
+                    </div>
                     <div>
-                        {renderLineChart}
+
+                        {chart}
                     </div></div>
 
 
