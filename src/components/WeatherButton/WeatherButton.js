@@ -5,7 +5,7 @@ const Button = (props) => {
 
     let btnCSS = 'WeatherButton';
 
-    if (props.test) {
+    if (props.buttonClicked) {
         btnCSS = 'WeatherButton WeatherButtonClicked'
     }
     return (

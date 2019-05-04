@@ -158,6 +158,7 @@ class Weather extends Component {
 
     // Event handlers
     onKeyEventHandler = (event) => {
+
         if (event.charCode === 13) {
             this.fetchWeatherData(event.target.value);
             this.setState({ updated: false });
@@ -165,7 +166,12 @@ class Weather extends Component {
         }
     }
 
+    onClickHandler = (event) => {
+        event.target.select();
+    }
+
     onBlurHandler = () => {
+
         this.setState({ error: false });
     }
 
@@ -274,16 +280,17 @@ class Weather extends Component {
                         defaultValue="Paris"
                         className={inputCSS}
                         onKeyPress={this.onKeyEventHandler}
-                        onBlur={this.onBlurHandler} />
+                        onBlur={this.onBlurHandler}
+                        onClick={this.onClickHandler} />
                 </div>
                 <div className="Container">
                     <div className="Weather">
                         {numberOfDays}
                     </div >
                     <div className="WeatherButtonContainer">
-                        <WeatherButton onclick={() => this.setState({ humidityClick: false, temperatureClick: true, windClick: false })} test={this.state.temperatureClick}>Temperature</WeatherButton>
-                        <WeatherButton onclick={() => this.setState({ humidityClick: false, temperatureClick: false, windClick: true })} test={this.state.windClick}>Wind</WeatherButton>
-                        <WeatherButton onclick={() => this.setState({ humidityClick: true, temperatureClick: false, windClick: false })} test={this.state.humidityClick}>Humidity</WeatherButton>
+                        <WeatherButton onclick={() => this.setState({ humidityClick: false, temperatureClick: true, windClick: false })} buttonClicked={this.state.temperatureClick}>Temperature</WeatherButton>
+                        <WeatherButton onclick={() => this.setState({ humidityClick: false, temperatureClick: false, windClick: true })} buttonClicked={this.state.windClick}>Wind</WeatherButton>
+                        <WeatherButton onclick={() => this.setState({ humidityClick: true, temperatureClick: false, windClick: false })} buttonClicked={this.state.humidityClick}>Humidity</WeatherButton>
                     </div>
                     <div>
                         {chart}

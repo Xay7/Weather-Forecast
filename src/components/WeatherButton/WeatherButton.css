@@ -24,7 +24,13 @@
 @media (max-width: 480px) {
 
     .WeatherButton {
+        background-color: #006aa9;
         width: 80px;
         font-size: 0.7em;
     }
+
+    .WeatherButtonClicked {
+        background-color: #2ecc71;
+    }
+
 }

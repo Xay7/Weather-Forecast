@@ -7,7 +7,7 @@ function App() {
 
     <div className="App">
       <Weather />
-      <a href="https://github.com">
+      <a href="https://github.com/Xay7/Weather-Forecast" target="_blank" rel="noopener noreferrer">
         <img src={Logo} alt="Github logo" className="Github" />
       </a>
     </div>
