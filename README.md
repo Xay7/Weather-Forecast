@@ -1,7 +1,7 @@
 ## Features
 
 * Responsive design
-* Data from current hour
+* 3-hour data display
 * Min/Max temperatures for 5 days
 * Graphs with temperature, wind and humidity
 * View it online [here](https://weather-forecast-fe821.firebaseapp.com/)
