@@ -25,6 +25,8 @@ class Weather extends Component {
         temperatureClick: true,
         humidityClick: false,
         windClick: false,
+        inputValue: 'Paris',
+        buttonDisabled: false,
     }
 
     // 5 day 3 hour forecast provided by www.openweathermap.org
@@ -167,6 +169,11 @@ class Weather extends Component {
         }
     }
 
+    onChangeHandler = (event) => {
+        console.log(event.target.value);
+        this.setState({ inputValue: event.target.value })
+    }
+
     onClickHandler = (event) => {
         event.target.select();
     }
@@ -186,6 +193,16 @@ class Weather extends Component {
         })
 
         this.setState({ selected: arr })
+    }
+
+    onSubmitClickHandler = () => {
+        this.fetchWeatherData(this.state.inputValue);
+        this.setState({ buttonDisabled: true });
+
+        setTimeout(function () {
+            this.setState({ buttonDisabled: false });
+        }.bind(this), 700);
+
     }
 
     render() {
@@ -281,8 +298,12 @@ class Weather extends Component {
                         defaultValue="Paris"
                         className={inputCSS}
                         onKeyPress={this.onKeyEventHandler}
+                        onChange={this.onChangeHandler}
                         onBlur={this.onBlurHandler}
                         onClick={this.onClickHandler} />
+                    <button className="Submit" onClick={this.onSubmitClickHandler} disabled={this.state.buttonDisabled}>
+                        <i className="fas fa-check"></i>
+                    </button>
                 </div>
                 <div className="Container">
                     <div className="Weather">
