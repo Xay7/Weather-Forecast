@@ -67,7 +67,7 @@ tspan {
 
 @media (max-width: 480px) {
     .Weather {
-        width: 320px;
+        width: 100vw;
         padding: 0;
         height: auto;
         margin: 0;
@@ -84,6 +84,7 @@ tspan {
     }
 
     .Container {
+        width: 100vw;
         margin: 0;
         box-shadow: none;
         margin: 0 auto;
@@ -91,15 +92,37 @@ tspan {
     }
 
     .recharts-surface {
-        display: none;
+        max-width: 100vw;
     }
 
     .recharts-wrapper {
-        display: none;
+        max-width: 100vw;
+        max-height: 0px;
+    }
+
+    .WeatherButtonContainer {
+        width: 100vw;
+    }
+
+    text {
+        fill: white;
+    }
+
+    path {
+        stroke: white;
+    }
+
+    svg {
+        height: 230px;
+        margin: 0 0px;
+    }
+
+    tspan {
+        font-size: 14px;
     }
 }
 
-@media (max-height: 320px) {
+@media (max-height: 200px) {
 
     .Weather {
         padding: 0;
@@ -112,10 +135,12 @@ tspan {
     }
 
     .Container {
+        padding-top: 10px;
         margin: 0;
         box-shadow: none;
         margin: 0 auto;
         background-color: transparent;
+        margin-bottom: 50px;
     }
 
     .recharts-surface {
@@ -130,6 +155,7 @@ tspan {
         font-size: 20px;
     }
 }
+
 
 @media (max-width: 768px) and (min-width:481px) {
     .Weather {

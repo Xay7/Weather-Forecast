@@ -39,7 +39,7 @@ class Weather extends Component {
                     fifthDay: [],
                     weeklyTime: []
                 }
-                console.log(data);
+
                 let tempMin = [99, 99, 99, 99, 99];
 
                 let tempMax = [-99, -99, -99, -99, -99];
@@ -51,16 +51,14 @@ class Weather extends Component {
                         temperatureString: (Math.round(el.main.temp)).toString() + '°',
                         humidity: el.main.humidity,
                         humidityString: el.main.humidity + '%',
-                        wind: (el.wind.speed * 3.6).toFixed(1),
-                        windString: (el.wind.speed * 3.6).toFixed(1).toString() + ' km/h',
+                        wind: el.wind.speed * 3.6,
+                        windString: (Math.round(el.wind.speed * 3.6)).toString() + ' km/h',
                         tempMin: (Math.round(el.main.temp_min)),
                         tempMax: (Math.round(el.main.temp_max)),
                         dates: (el.dt_txt.slice(0, 10)),
                         icon: 'http://openweathermap.org/img/w/' + el.weather[0].icon + '.png'
                     });
                 })
-
-                console.log(weatherData)
 
                 // Get first 9 3-hours for first day
                 for (let i = 0; i < 9; i++) {
@@ -75,7 +73,6 @@ class Weather extends Component {
                     }
                 }
 
-
                 // Remove remaining first day hours for remaining days
                 for (let y = 0; y < 2; y++) {
                     if (weatherData.weeklyTime[y].time === "03:00" && weatherData.weeklyTime[y + 1].time === "06:00") {
@@ -88,7 +85,6 @@ class Weather extends Component {
                 }
 
                 // Handle other days hours
-
                 let help = 0;
 
 
@@ -147,10 +143,14 @@ class Weather extends Component {
                     help++;
                     weatherData.weeklyTime.shift();
                 }
-
                 for (let y = 0; y < 9; y++) {
+
+
                     weatherData.fifthDay.push(weatherData.weeklyTime[0]);
 
+                    if (weatherData.fifthDay[y] === undefined) {
+                        break;
+                    }
                     if (weatherData.fifthDay[y].tempMin < tempMin[4]) {
                         tempMin[4] = weatherData.fifthDay[y].tempMin;
                     }
@@ -164,6 +164,7 @@ class Weather extends Component {
                     }
                     help++;
                     weatherData.weeklyTime.shift();
+
                 }
 
                 let dates = [
@@ -333,7 +334,7 @@ class Weather extends Component {
 
         if (this.state.temperatureClick) {
             chart = (
-                <LineChart  width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                <LineChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
                     <Line type="monotone" dataKey="temperature" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false}>
                         <LabelList dataKey="temperatureString" position="top" offset={15} />
                     </Line>
@@ -344,7 +345,7 @@ class Weather extends Component {
 
         if (this.state.windClick) {
             chart = (
-                <LineChart  width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                <LineChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
                     <Line type="monotone" dataKey="wind" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false}>
                         <LabelList dataKey="windString" position="top" offset={15} />
                     </Line>
