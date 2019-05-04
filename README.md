@@ -1,8 +1,7 @@
 
 # 5 day weather forecast 
 
-Responsive application that shows displays temperature, wind and humidity data with graphs for next 5 days from current hour
-
+Responsive application that shows displays temperature, wind and humidity data with graphs for next 5 days from current hour. You can view it online [here](https://weather-forecast-fe821.firebaseapp.com/).
 ## Installation
 
 
