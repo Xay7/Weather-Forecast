@@ -1,7 +1,11 @@
+## Features
 
-# 5 day weather forecast 
+* Responsive design
+* Data from current hour
+* Min/Max temperatures for 5 days
+* Graphs with temperature, wind and humidity
+* View it online [here](https://weather-forecast-fe821.firebaseapp.com/)
 
-Responsive application that shows displays temperature, wind and humidity data with graphs for next 5 days from current hour. You can view it online [here](https://weather-forecast-fe821.firebaseapp.com/).
 ## Installation
 
 
