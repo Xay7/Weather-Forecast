@@ -11,11 +11,13 @@ class Weather extends Component {
         icon: [],
         error: false,
         updated: false,
-        firstDay: [],
-        secondDay: [],
-        thirdDay: [],
-        fourthDay: [],
-        fifthDay: [],
+        days: {
+            first: [],
+            second: [],
+            third: [],
+            fourth: [],
+            fifth: [],
+        },
         tempMin: [],
         tempMax: [],
         selected: [true, false, false, false, false],
@@ -24,7 +26,7 @@ class Weather extends Component {
         windClick: false,
     }
 
-    // 3 hour daily forecast provided by www.openweathermap.org
+    // 5 day 3 hour forecast provided by www.openweathermap.org
     fetchWeatherData = (city) => {
         fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=metric&appid=0044f0866f4b9b2160761fd5ce752fed')
             .then(res => {
@@ -33,11 +35,13 @@ class Weather extends Component {
             .then(data => {
                 const weatherData = {
                     firstDay: [],
-                    secondDay: [],
-                    thirdDay: [],
-                    fourthDay: [],
-                    fifthDay: [],
-                    weeklyTime: []
+                    weeklyTime: [],
+                    days: {
+                        second: [],
+                        third: [],
+                        fourth: [],
+                        fifth: []
+                    }
                 }
 
                 let tempMin = [99, 99, 99, 99, 99];
@@ -60,7 +64,7 @@ class Weather extends Component {
                     });
                 })
 
-                // Get first 9 3-hours for first day
+                // Handle first day data and format object for other days
                 for (let i = 0; i < 9; i++) {
                     weatherData.firstDay[i] = weatherData.weeklyTime[i];
 
@@ -73,7 +77,6 @@ class Weather extends Component {
                     }
                 }
 
-                // Remove remaining first day hours for remaining days
                 for (let y = 0; y < 2; y++) {
                     if (weatherData.weeklyTime[y].time === "03:00" && weatherData.weeklyTime[y + 1].time === "06:00") {
                         break;
@@ -84,111 +87,56 @@ class Weather extends Component {
                     }
                 }
 
-                // Handle other days hours
-                let help = 0;
+                // Handle other day data
+                let noonDetector = 0;
+                let objectKeySize = 1;
+
+                for (var key in weatherData.days) {
+                    for (let y = 0; y < 9; y++) {
+
+                        weatherData.days[key].push(weatherData.weeklyTime[0]);
+
+                        if (weatherData.days[key][y].tempMin < tempMin[objectKeySize]) {
+                            tempMin[objectKeySize] = weatherData.days[key][y].tempMin;
+                        }
+                        if (weatherData.days[key][y].tempMax > tempMax[objectKeySize]) {
+                            tempMax[objectKeySize] = weatherData.days[key][y].tempMax;
+                        }
 
 
-                for (let y = 0; y < 9; y++) {
-                    weatherData.secondDay.push(weatherData.weeklyTime[0]);
-
-                    if (weatherData.secondDay[y].tempMin < tempMin[1]) {
-                        tempMin[1] = weatherData.secondDay[y].tempMin;
+                        if (weatherData.weeklyTime[0].time === "00:00" && noonDetector > 0) {
+                            noonDetector = 0;
+                            break;
+                        }
+                        noonDetector++;
+                        weatherData.weeklyTime.shift();
                     }
-                    if (weatherData.secondDay[y].tempMax > tempMax[1]) {
-                        tempMax[1] = weatherData.secondDay[y].tempMax;
-                    }
-
-
-                    if (weatherData.weeklyTime[0].time === "00:00" && help > 0) {
-                        help = 0;
-                        break;
-                    }
-                    help++;
-                    weatherData.weeklyTime.shift();
-                }
-
-                for (let y = 0; y < 9; y++) {
-                    weatherData.thirdDay.push(weatherData.weeklyTime[0]);
-
-                    if (weatherData.thirdDay[y].tempMin < tempMin[2]) {
-                        tempMin[2] = weatherData.thirdDay[y].tempMin;
-                    }
-                    if (weatherData.thirdDay[y].tempMax > tempMax[2]) {
-                        tempMax[2] = weatherData.thirdDay[y].tempMax;
-                    }
-
-                    if (weatherData.weeklyTime[0].time === "00:00" && help > 0) {
-                        help = 0;
-                        break;
-                    }
-                    help++;
-                    weatherData.weeklyTime.shift();
-                }
-
-                for (let y = 0; y < 9; y++) {
-                    weatherData.fourthDay.push(weatherData.weeklyTime[0]);
-
-
-                    if (weatherData.fourthDay[y].tempMin < tempMin[3]) {
-                        tempMin[3] = weatherData.fourthDay[y].tempMin;
-                    }
-                    if (weatherData.fourthDay[y].tempMax > tempMax[3]) {
-                        tempMax[3] = weatherData.fourthDay[y].tempMax;
-                    }
-
-                    if (weatherData.weeklyTime[0].time === "00:00" && help > 0) {
-                        help = 0;
-                        break;
-                    }
-                    help++;
-                    weatherData.weeklyTime.shift();
-                }
-                for (let y = 0; y < 9; y++) {
-
-
-                    weatherData.fifthDay.push(weatherData.weeklyTime[0]);
-
-                    if (weatherData.fifthDay[y] === undefined) {
-                        break;
-                    }
-                    if (weatherData.fifthDay[y].tempMin < tempMin[4]) {
-                        tempMin[4] = weatherData.fifthDay[y].tempMin;
-                    }
-                    if (weatherData.fifthDay[y].tempMax > tempMax[4]) {
-                        tempMax[4] = weatherData.fifthDay[y].tempMax;
-                    }
-
-                    if (weatherData.weeklyTime[0].time === "00:00" && help > 0) {
-                        help = 0;
-                        break;
-                    }
-                    help++;
-                    weatherData.weeklyTime.shift();
-
+                    objectKeySize++;
                 }
 
                 let dates = [
                     weatherData.firstDay[0].dates,
-                    weatherData.secondDay[0].dates,
-                    weatherData.thirdDay[0].dates,
-                    weatherData.fourthDay[0].dates,
-                    weatherData.fifthDay[0].dates,
+                    weatherData.days.second[0].dates,
+                    weatherData.days.third[0].dates,
+                    weatherData.days.fourth[0].dates,
+                    weatherData.days.fifth[0].dates,
                 ];
 
                 let icons = [
                     weatherData.firstDay[0].icon,
-                    weatherData.secondDay[4].icon,
-                    weatherData.thirdDay[4].icon,
-                    weatherData.fourthDay[4].icon,
-                    weatherData.fifthDay[4].icon,
+                    weatherData.days.second[4].icon,
+                    weatherData.days.third[4].icon,
+                    weatherData.days.fourth[4].icon,
+                    weatherData.days.fifth[4].icon,
                 ];
-
                 this.setState({
-                    firstDay: weatherData.firstDay,
-                    secondDay: weatherData.secondDay,
-                    thirdDay: weatherData.thirdDay,
-                    fourthDay: weatherData.fourthDay,
-                    fifthDay: weatherData.fifthDay,
+                    days: {
+                        first: weatherData.firstDay,
+                        second: weatherData.days.second,
+                        third: weatherData.days.third,
+                        fourth: weatherData.days.fourth,
+                        fifth: weatherData.days.fifth,
+                    },
                     tempMin: tempMin,
                     tempMax: tempMax,
                     error: false,
@@ -221,68 +169,17 @@ class Weather extends Component {
         this.setState({ error: false });
     }
 
-    onFirstDayClickHandler = () => {
+    onDayClickHandler = (dayNumber) => {
         let arr = [...this.state.selected];
 
         arr.map((_el, index) => {
-            if (index === 0) {
+            if (index === dayNumber) {
                 return arr[index] = true;
             } else return arr[index] = false;
         })
 
         this.setState({ selected: arr })
     }
-    onSecondDayClickHandler = () => {
-
-        let arr = [...this.state.selected];
-
-        arr.map((_el, index) => {
-            if (index === 1) {
-                return arr[index] = true;
-            } else return arr[index] = false;
-        })
-
-        this.setState({ selected: arr })
-    }
-
-    onThirdDayClickHandler = () => {
-        let arr = [...this.state.selected];
-
-        arr.map((_el, index) => {
-            if (index === 2) {
-                return arr[index] = true;
-            } else return arr[index] = false;
-        })
-
-        this.setState({ selected: arr })
-    }
-
-    onFourthDayClickHandler = () => {
-        let arr = [...this.state.selected];
-
-        arr.map((_el, index) => {
-            if (index === 3) {
-                return arr[index] = true;
-            } else return arr[index] = false;
-        })
-
-        this.setState({ selected: arr })
-    }
-
-    onFifthDayClickHandler = () => {
-        let arr = [...this.state.selected];
-
-        arr.map((_el, index) => {
-            if (index === 4) {
-                return arr[index] = true;
-            } else return arr[index] = false;
-        })
-
-        this.setState({ selected: arr })
-    }
-
-
-
 
     render() {
 
@@ -294,6 +191,7 @@ class Weather extends Component {
 
         let days = [];
 
+        // Shorten strings to 3 chars + dot 
         this.state.dates.map(el => {
             return days.push(getDayName(el, "en-US").slice(0, 3) + '.');
         });
@@ -309,26 +207,12 @@ class Weather extends Component {
         // Dynamic data display on graph based on a selected day
         let data = null;
 
-        if (this.state.selected[0]) {
-            data = this.state.firstDay;
-        }
-
-        if (this.state.selected[1]) {
-            data = this.state.secondDay;
-
-        }
-
-        if (this.state.selected[2]) {
-            data = this.state.thirdDay;
-        }
-        if (this.state.selected[3]) {
-            data = this.state.fourthDay;
-        }
-
-        if (this.state.selected[4]) {
-            data = this.state.fifthDay;
-        }
-
+        // Change data based on element clicked 
+        this.state.selected.map((el, i) => {
+            if (el) {
+                return data = Object.values(this.state.days)[i];
+            } else return false;
+        })
         // Charts by www.recharts.org
         let chart = null;
 
@@ -365,6 +249,22 @@ class Weather extends Component {
             )
         }
 
+
+        // Render number of days based on number of dates in state
+        let numberOfDays = this.state.dates.map((_el, i) => (
+            <Day
+                key={this.state.dates[i]}
+                day={days[i]}
+                temperatureMin={this.state.tempMin[i]}
+                temperatureMax={this.state.tempMax[i]}
+                icon={this.state.icon[i]}
+                updated={this.state.updated}
+                onclick={() => this.onDayClickHandler(i)}
+                selected={this.state.selected[i]}>
+            </Day>
+        ))
+
+
         return (
             <Fragment>
                 <h1 className="Title">5 day weather forecast</h1>
@@ -378,12 +278,7 @@ class Weather extends Component {
                 </div>
                 <div className="Container">
                     <div className="Weather">
-                        <Day day={days[0]} temperatureMin={this.state.tempMin[0]} temperatureMax={this.state.tempMax[0]} icon={this.state.icon[0]} updated={this.state.updated} onclick={this.onFirstDayClickHandler} selected={this.state.selected[0]}></Day>
-                        <Day day={days[1]} temperatureMin={this.state.tempMin[1]} temperatureMax={this.state.tempMax[1]} icon={this.state.icon[1]} updated={this.state.updated} onclick={this.onSecondDayClickHandler} selected={this.state.selected[1]}></Day>
-                        <Day day={days[2]} temperatureMin={this.state.tempMin[2]} temperatureMax={this.state.tempMax[2]} icon={this.state.icon[2]} updated={this.state.updated} onclick={this.onThirdDayClickHandler} selected={this.state.selected[2]}></Day>
-                        <Day day={days[3]} temperatureMin={this.state.tempMin[3]} temperatureMax={this.state.tempMax[3]} icon={this.state.icon[3]} updated={this.state.updated} onclick={this.onFourthDayClickHandler} selected={this.state.selected[3]}></Day>
-                        <Day day={days[4]} temperatureMin={this.state.tempMin[4]} temperatureMax={this.state.tempMax[4]} icon={this.state.icon[4]} updated={this.state.updated} onclick={this.onFifthDayClickHandler} selected={this.state.selected[4]}></Day>
-
+                        {numberOfDays}
                     </div >
                     <div className="WeatherButtonContainer">
                         <WeatherButton onclick={() => this.setState({ humidityClick: false, temperatureClick: true, windClick: false })} test={this.state.temperatureClick}>Temperature</WeatherButton>
@@ -396,7 +291,7 @@ class Weather extends Component {
                 </div>
 
 
-            </Fragment>
+            </Fragment >
         );
     }
 }
