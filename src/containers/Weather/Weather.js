@@ -4,6 +4,7 @@ import './Weather.css';
 import { LineChart, Line, XAxis, LabelList, AreaChart, Area } from 'recharts';
 import WeatherButton from '../../components/WeatherButton/WeatherButton';
 
+
 class Weather extends Component {
 
     state = {
@@ -28,7 +29,7 @@ class Weather extends Component {
 
     // 5 day 3 hour forecast provided by www.openweathermap.org
     fetchWeatherData = (city) => {
-        fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=metric&appid=0044f0866f4b9b2160761fd5ce752fed')
+        fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=metric&appid=' + process.env.REACT_APP_API_KEY)
             .then(res => {
                 return res.json()
             })
@@ -274,7 +275,7 @@ class Weather extends Component {
         return (
             <Fragment>
                 <h1 className="Title">5 day weather forecast</h1>
-                <div >
+                <div className="InputContainer">
                     <input
                         type="text"
                         defaultValue="Paris"
