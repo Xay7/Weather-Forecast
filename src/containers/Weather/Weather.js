@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Day from '../../components/Day/Day';
 import './Weather.css';
-import { LineChart, Line, XAxis, LabelList, AreaChart, Area } from 'recharts';
+import { LineChart, Line, XAxis, LabelList, AreaChart, Area, BarChart, Bar } from 'recharts';
 import WeatherButton from '../../components/WeatherButton/WeatherButton';
 
 
@@ -261,12 +261,12 @@ class Weather extends Component {
 
         if (this.state.windClick) {
             chart = (
-                <LineChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
-                    <Line type="monotone" dataKey="wind" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false}>
+                <BarChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                    <Bar type="monotone" dataKey="wind" fill="#3AA9F4" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false} > 
                         <LabelList dataKey="windString" position="top" offset={15} />
-                    </Line>
+                    </Bar>
                     <XAxis dataKey="time" axisLine={false} tickLine={false} />
-                </LineChart>
+                </BarChart>
             )
         }
 

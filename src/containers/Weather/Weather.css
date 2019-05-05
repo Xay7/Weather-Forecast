@@ -137,13 +137,22 @@ tspan {
         fill: white;
     }
 
-    path {
-        stroke: white;
-    }
 
     svg {
         height: 230px;
         margin: 0 0px;
+    }
+
+    .recharts-line-curve {
+        stroke: white;
+    }
+
+    .recharts-rectangle {
+        fill: white;
+    }
+
+    .recharts-area-area {
+        fill-opacity: 0.3;
     }
 
     tspan {
