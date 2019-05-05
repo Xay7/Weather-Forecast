@@ -15,7 +15,7 @@ git clone https://github.com/Xay7/Weather-Forecast
 cd Weather-Forecast
 npm install
 ```
-Open weather.js and in line 35 replace process.env.REACT_APP_API_KEY with your www.openweathermap.org API_KEY
+Open weather.js and in line 35 replace process.env.REACT_APP_API_KEY with your https://openweathermap.org/ API_KEY
 ```
 npm start
 ```
