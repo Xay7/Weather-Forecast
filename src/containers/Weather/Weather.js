@@ -47,7 +47,6 @@ class Weather extends Component {
                         fifth: []
                     }
                 }
-
                 let tempMin = [99, 99, 99, 99, 99];
 
                 let tempMax = [-99, -99, -99, -99, -99];
@@ -98,7 +97,13 @@ class Weather extends Component {
                 for (var key in weatherData.days) {
                     for (let y = 0; y < 9; y++) {
 
+                        if (weatherData.weeklyTime[0] === undefined) {
+                            break;
+                        }
+
                         weatherData.days[key].push(weatherData.weeklyTime[0]);
+
+
 
                         if (weatherData.days[key][y].tempMin < tempMin[objectKeySize]) {
                             tempMin[objectKeySize] = weatherData.days[key][y].tempMin;
@@ -117,6 +122,8 @@ class Weather extends Component {
                     }
                     objectKeySize++;
                 }
+
+
 
                 let dates = [
                     weatherData.firstDay[0].dates,
