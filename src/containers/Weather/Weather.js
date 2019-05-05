@@ -30,6 +30,7 @@ class Weather extends Component {
     }
 
     // 5 day 3 hour forecast provided by www.openweathermap.org
+    // Replace process.env.REACT_APP_API_KEY with your openweathermap API_KEY
     fetchWeatherData = (city) => {
         fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&units=metric&appid=' + process.env.REACT_APP_API_KEY)
             .then(res => {
