@@ -36,7 +36,7 @@
     margin-bottom: 30px;
     width: 200px;
     height: 50px;
-    transition: all 500ms;
+    transition: all 350ms;
 }
 
 .CityFocus:hover {
@@ -79,12 +79,16 @@ tspan {
     font-size: 24px;
     text-align: center;
     outline-width: 0;
-    transition: all 500ms;
+    transition: all 350ms;
     cursor: pointer;
 }
 
 .Submit:hover {
     background-color: #31b367;
+}
+
+.Submit:active {
+    background-color: #136837;
 }
 
 @media (max-width: 480px) {
