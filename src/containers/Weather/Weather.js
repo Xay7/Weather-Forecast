@@ -230,9 +230,11 @@ class Weather extends Component {
 
         // Change input CSS based on error 
         let inputCSS = 'City CityFocus';
+        let submitCSS = 'Submit';
 
         if (this.state.error) {
             inputCSS = 'City CityError';
+            submitCSS = 'Submit SubmitError';
         }
 
 
@@ -309,7 +311,7 @@ class Weather extends Component {
                         onChange={this.onChangeHandler}
                         onBlur={this.onBlurHandler}
                         onClick={this.onClickHandler} />
-                    <button className="Submit" onClick={this.onSubmitClickHandler} disabled={this.state.buttonDisabled}>
+                    <button className={submitCSS} onClick={this.onSubmitClickHandler} disabled={this.state.buttonDisabled}>
                         <i className="fas fa-check"></i>
                     </button>
                 </div>
