@@ -250,9 +250,9 @@ class Weather extends Component {
 
         if (this.state.temperatureClick) {
             chart = (
-                <LineChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                <LineChart width={720} height={300} data={data} margin={{ top: 50, right: 50, left: 50, bottom: 5 }} >
                     <Line type="monotone" dataKey="temperature" stroke="#8884d8" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false}>
-                        <LabelList dataKey="temperatureString" position="top" offset={15} />
+                        <LabelList dataKey="temperatureString" position="top" offset={10} />
                     </Line>
                     <XAxis dataKey="time" axisLine={false} tickLine={false} />
                 </LineChart>
@@ -261,20 +261,20 @@ class Weather extends Component {
 
         if (this.state.windClick) {
             chart = (
-                <BarChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
-                    <Bar type="monotone" dataKey="wind" fill="#3AA9F4" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false} > 
-                        <LabelList dataKey="windString" position="top" offset={15} />
+                <BarChart width={720} height={300} data={data} margin={{ top: 50, right: 50, left: 50, bottom: 5 }} >
+                    <Bar type="monotone" dataKey="wind" fill="#3AA9F4" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" dot={false} >
+                        <LabelList dataKey="windString" position="top" offset={10} />
                     </Bar>
-                    <XAxis dataKey="time" axisLine={false} tickLine={false} />
+                    <XAxis dataKey="time" axisLine={false} tickLine={false} interval="preserveStartEnd" />
                 </BarChart>
             )
         }
 
         if (this.state.humidityClick) {
             chart = (
-                <AreaChart width={720} height={300} data={data} margin={{ top: 25, right: 50, left: 50, bottom: 5 }} >
+                <AreaChart width={720} height={300} data={data} margin={{ top: 50, right: 50, left: 50, bottom: 5 }} >
                     <Area type="monotone" dataKey="humidity" isAnimationActive={true} animationDuration={350} animationEasing="ease-in-out" fillOpacity={0.2}>
-                        <LabelList dataKey="humidityString" position="top" offset={15} />
+                        <LabelList dataKey="humidityString" position="top" offset={10} />
                     </Area>
                     <XAxis dataKey="time" axisLine={false} tickLine={false} />
                 </AreaChart>

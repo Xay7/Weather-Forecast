@@ -55,7 +55,7 @@
 }
 
 tspan {
-    font-size: 12px;
+    font-size: 14px;
 
 }
 
@@ -152,11 +152,12 @@ tspan {
     }
 
     .recharts-area-area {
-        fill-opacity: 0.3;
+        fill:white;
+        fill-opacity: 1;
     }
 
     tspan {
-        font-size: 14px;
+        font-size: 18px;
     }
 }
 
